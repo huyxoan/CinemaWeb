@@ -1,0 +1,116 @@
+{% extends '_shared/base.html' %}
+{% load thumbnail %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+{% block css %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"></script>
+{% endblock %}
+{% block body %}
+    <div class="dashBg"></div>
+    <div class="dashContainer d-flex flex-md-row flex-column p-4 ">
+        <aside class="sidebar  col-md-3 col-sm-12 pb-3">
+            <div class="avatarPic w-100 mt-1">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="AvatarName  w-100 text-center text-white " onclick="">
+                <h4 class="AvatarNameText">{% if user.first_name %}
+                    {{ user.first_name|title }} {{ user.last_name }}
+                {% else %}
+                    {{ user.username|title }}
+                {% endif %} </h4>
+            </div>
+            <div class="AvatarSaved itemSelected justify-content-sm-center justify-content-md-start  d-flex align-items-center text-white mt-5  icon-cursor-move">
+                <a onclick="SelectToggle('saved')"
+                   class="text-decoration-none text-white d-flex">
+                    <i class="fa fa-bookmark fs-4 ms-4"></i>
+                    <h4 class="ms-3">Saved</h4>
+                </a>
+
+            </div>
+            <div class="AvatarProfile justify-content-sm-center justify-content-md-start d-flex align-items-center text-white mt-5 ">
+                <a onclick="SelectToggle('profile')"
+                   class="text-decoration-none text-white d-flex">
+                    <i class="fa fa-user-circle fs-4 ms-4"> </i>
+                    <h4 class="ms-3">Profile</h4>
+                </a>
+
+            </div>
+            <div class="AvatarLogout justify-content-sm-center justify-content-md-start d-flex align-items-center mt-5  text-danger">
+                <a href="{% url 'logout' %}" class="text-decoration-none text-danger d-flex">
+                    <i class="fa fa-sign-out-alt fs-4 ms-4"> </i>
+                    <h4 class="ms-3">Logout</h4>
+                </a>
+            </div>
+        </aside>
+        <main id="contentBar" class="contentBar  col-md-9 col-sm-12 ms-4">
+            <div id="saved">
+                <h3 class="text-white mt-sm-4">Saved movies</h3>
+                <section class="regular DashSlider slider h-50 mt-4">
+                    {% for serie in saved_series %}
+                        <div class="SavedItem ms-3">
+                            <div class="SavedItemImage">
+                                {% thumbnail serie.banner "200x300" crop="center" as im %}
+                                    <img class="img-fluid" src="{{ im.url }}" alt="">
+                                {% endthumbnail %}
+                                <div class="hover">
+                                    <a href="{{ serie.get_absolute_url }}"><i class='fas fa-play'></i></a>
+                                </div>
+                            </div>
+                            <div class="MovieName">
+                                <h4>{{ serie.name }}</h4>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% for film in saved_films %}
+                        <div class="SavedItem ms-3">
+                            <div class="SavedItemImage">
+                                <img class="img-fluid" src="{{ film.banner.url }}" alt="">
+                                <div class="hover">
+                                    <a href="{{ film.get_absolute_url }}"><i class='fas fa-play'></i></a>
+                                </div>
+                            </div>
+                            <div class="MovieName">
+                                <h4>{{ film.name }}</h4>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </section>
+            </div>
+            <div id="profile" style="display: none">
+                <h3 class="text-white mt-sm-5">Profile</h3>
+                <div class="w-100 h-90">
+                    <form class="profileForm d-grid " method="post" action="{% url 'dashboard-page' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="text-white mt-3 shadow-lg" for="UserNameInput">First name</label>
+                            <input type="text" id="UserNameInput" class="form-control" name="first_name"
+                                   value="{{ user.first_name }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white mt-3 shadow-lg" for="PhNumInput">Last name</label>
+                            <input type="text" id="PhNumInput" class="form-control" name="last_name"
+                                   value="{{ user.last_name }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="text-white mt-3 shadow-lg" for="EmailInput"
+                                   aria-describedby="emailHelp">Email</label>
+                            <input type="email" id="EmailInput" class="form-control" value="{{ user.email }}"
+                                   name="email">
+                        </div>
+                        <div class="ProfileConfirm">
+                            <button type="submit" class="btn btn-warning rounded-5 mt-4 shadow-sm p-2">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div class="nav-mask">
+    </div>
+{% endblock %}

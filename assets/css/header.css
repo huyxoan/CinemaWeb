@@ -1,0 +1,82 @@
+    /* Overall container */
+    .userDashboard {
+        position: relative;
+        display: inline-block;
+    }
+    
+    /* User Icon */
+    .dashboard-toggle {
+        text-decoration: none;
+        font-size: 2rem;
+        color: #ff5722; /* Vibrant cinema theme color */
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+    
+    .dashboard-toggle:hover {
+        color: #f9a825;
+    }
+    
+    /* Dropdown Menu */
+    .dashboard-menu {
+        position: absolute;
+        top: 120%;
+        right: 0;
+        background: #2c2c2c; /* Dark cinema-themed background */
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        width: 220px;
+        display: none; /* Hidden by default */
+        z-index: 10;
+        padding: 10px;
+    }
+    
+    /* Show menu on hover */
+    /* .userDashboard:hover .dashboard-menu {
+        display: block;
+    } */
+.dashboard-menu{
+    display: block;
+}
+    
+    /* .dashboard-menu:hover {
+        display: block;
+    }
+     */
+    /* Language Toggle */
+    
+    /* Menu Items */
+    .dashboard-menu ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .dashboard-menu ul li {
+        margin: 10px 0;
+    }
+    
+    .dashboard-menu ul li a {
+        text-decoration: none;
+        font-size: 0.9rem;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        transition: color 0.3s ease;
+    }
+    
+    .dashboard-menu ul li a:hover {
+        color: #ff5722;
+    }
+    
+    .dashboard-menu ul li a i {
+        margin-right: 10px;
+        font-size: 1.2rem;
+    }
+    
+    /* Divider */
+    .dashboard-menu hr {
+        border: 0;
+        border-top: 1px solid #555;
+        margin: 10px 0;
+    }

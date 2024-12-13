@@ -1,0 +1,52 @@
+{% extends '_shared/base.html' %}
+{% load thumbnail %}
+{% block title %}
+         {{ticket.shows.film.name}}
+{% endblock %}
+{% load i18n %}
+
+
+{% block body %}
+<link rel="stylesheet" href="/assets/css/ticket.css">
+
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-8 card shadow">
+      <div class="row justify-content-around pass-h title">
+        <div class="col-4">
+          <h2> <i class="fa fa-video-camera"></i> BoxOffice</h2>
+        </div>
+        <div class="col-6">
+          <h2 style="text-align:center">{{ticket.shows.film.name}}</h2>
+        </div>
+      </div>
+      <div class="row mt-4 mb-4">
+        <div class="col-3">
+          <img class="img-fluid shadow-sm border"
+            src="https://www.ruletech.com.au/wp-content/uploads/2018/06/qr-code-rule-website.png">
+        </div>
+        <div class="col-9">
+          <div class="row">
+            <div class="col-6">
+              <h3>{%trans "Mã đặt vé" %} :<span> {{ticket.bookid}}</span> </h3>
+              <h3>{%trans "Ngày" %} :<span> {{ticket.shows.date}}</span> </h3>
+              <h3>{%trans "Số tiền" %} :<span> {{ticket.total_price}} VND</span> </h3>
+            </div>
+            <div class="col-6">
+              <h3>{%trans "Số ghế" %}:<span> {{ticket.useat}}</span> </h3>
+              <h3>{%trans "Thời gian" %} :<span> {{ticket.shows.start_time}}</span> </h3>
+              <h3>{%trans "Màn hình" %} :<span>{{ticket.shows.screen}}</span> </h3>
+            </div>
+            <div class="col-12 mt-3 info">
+               <i class="fa fa-location-arrow"></i> {{ticket.shows.film.name}} : <span> {{ticket.useat}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock %}
+
+<div class = "col-lg-3"

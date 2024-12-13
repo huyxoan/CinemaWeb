@@ -1,0 +1,57 @@
+{% extends '_shared/base.html' %}
+{% load thumbnail %}
+{% block title %}
+    ORDER HISTORY
+{% endblock %}
+{% load i18n %}
+
+{% block body %}
+
+<link rel="stylesheet" href="/assets/css/booking.css">
+
+<div class="container-fluid box" style="margin: 2em;">
+    <div class="row justify-content-center">
+
+        <div class="col-8 card p-2 shadow mt-5">
+            <h1>{%trans "Lịch sử đặt vé" %}</h1>
+            <table class="table text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">{%trans "Mã đặt vé" %}</th>
+                        <th scope="col">{%trans "Tên phim" %}</th>
+                        <th scope="col">{%trans "Chi tiết" %}</th>
+                        <th scope="col">{%trans "Tổng tiền" %}</th>
+                        <th scope="col">{%trans "Số ghế" %}</th>
+                        <th scope="col">{%trans "Xem vé" %}</th>
+                        <th scope="col">{%trans "Xóa" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for b in book %}
+                    <tr>
+                        <th>{{b.bookid}}</th>
+                        <th>{{b.shows.film.name}}</th>
+                        <th>{{b.shows.screen}},{{b.shows.date}},{{b.shows.start_time}}</th>
+                        <th>{{b.total_price}}</th>
+                        <th>{{b.useat}}</th>
+
+                        {% if b.has_successful_payment %}
+                        <th><a class="btn btn-primary" href="{%url 'ticket' b.pk %}" target="_blank">{%trans "Xem" %}</a></th>
+                        {%else%}
+                        <th><a class="btn btn-primary" href="{% url 'payment' b.pk %}" target="_blank">{%trans "Thanh toán" %}</a></th>
+                        {% endif %} 
+
+                       
+                        <th><a class="btn btn-danger" href="{%url 'delete' b.pk %}" target="_blank">{%trans "Xóa" %}</a></th>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

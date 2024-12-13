@@ -1,0 +1,112 @@
+{% extends '_shared/base.html' %}
+{% load thumbnail %}
+{% block title %}
+         {{show.film.name}}
+{% endblock %}
+
+
+{% block body %}
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar ">
+
+        <!-- Nav Item - Dashboard -->
+
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div class="row m-3">
+            <div class="col-12 card round">
+                <h5 class="display-4">Add Shows at {{user.cinema.cinema_name}}</h5>
+                <hr>
+
+
+                {% for message in messages %}
+                <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {% endfor %}
+
+                <div class="row p-4">
+                    <div class="col-12">
+                        <form action="" method="POST">
+                                {% csrf_token %}
+                            <div class="form-row justify-content-center">
+                                <div class="col-5">
+                                    <select id="inputState" class="form-control" name="m">
+                                        <option>Choose Movie</option>
+                                        {% for list in mov %}
+                                        <option value="{{list.movie}}">{{ list.movie_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <input type="date" class="form-control" placeholder="Date" name="d">
+                                </div>
+                                <div class="col-2">
+                                    <input type="time" class="form-control" placeholder="Time" name="t">
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" class="form-control" placeholder="Ticket Price (Rs)" name="p">
+                                </div>
+                            </div>
+                            <div class="col-3 mt-4">
+                                <input type="submit" class="btn btn-block btn-primary">
+                            </div>
+                    </div>
+                    </form>
+                </div>
+
+                {% for movie in list %}
+                <div class="col-3 poster p-0 shadow card text-center">
+                    <img src="/media/{{movie.movie__movie_poster}}" class="img-fluid" alt="Misisng Poster">
+                    <h5 class="p-3">{{movie.movie__movie_name}}</h5>
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <div class="col-12 card round mt-2">
+                    <h3 class="">All Shows at {{user.cinema.cinema_name}}</h3>
+                    <hr>
+                
+                    <table class="table shadow text-center">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" width="5%">ID</th>
+                                    <th scope="col">Movie</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Date (YYYY/MM/DD)</th>
+                                    <th scope="col">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for list in s %}
+                                    <tr>
+                                        <th scope="row">{{list.shows}}</th>
+                                        <td>{{list.movie.movie_name}}</td>
+                                        <td>{{list.time}}</td>
+                                        <td>{{list.date}}</td>
+                                        <td>Rs. {{list.price}}</td>
+                                    </tr>
+                                        {% endfor %}
+                            </tbody>
+                        </table>
+                    
+                </div>
+
+        </div>
+    </div>
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+
+{% endblock %}

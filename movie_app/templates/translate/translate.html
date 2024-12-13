@@ -1,0 +1,49 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="/assets/css/translate.css">
+</head>
+
+<body>
+    <div class="switch">
+        <input id="language-toggle" class="check-toggle check-toggle-round-flat" type="checkbox"
+            onclick="toggleLanguage()">
+        <label for="language-toggle"></label>
+        <span class="on">VN</span>
+        <span class="off">EN</span>
+    </div>
+
+    <script>
+
+        function toggleLanguage() {
+            const toggle = document.getElementById('language-toggle');
+
+            // Check the toggle state (whether it's checked or not)
+            const lang = toggle.checked ? 'en' : 'vn'; // 'vn' for Vietnamese, 'en' for English
+
+            // Update the URL with the new language parameter
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('lang', lang); // Set 'lang' query parameter
+            window.location.href = currentUrl.toString(); // Reload page with new URL
+        }
+
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            const currentUrl = new URL(window.location.href);
+            const lang = currentUrl.searchParams.get('lang') || 'vn'; 
+
+            const toggle = document.getElementById('language-toggle');
+            // Set the toggle to the corresponding language
+            if (lang === 'en') {
+                toggle.checked = true;
+            } else {
+                toggle.checked = false;
+            }
+        });
+
+    </script>
+</body>
+
+</html>

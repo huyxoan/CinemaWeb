@@ -1,0 +1,500 @@
+{% extends '_shared/base.html' %}
+{% load thumbnail %}
+
+{% block title %}
+{{ film.name }} - Download
+{% load static %}
+{% endblock %}
+{% load i18n %}
+{% block body %}
+<link rel="stylesheet" href="/assets/css/filmdownload.css">
+<style>
+    .pageBg {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        z-index: -1;
+        filter: blur(15px);
+        background: url({% if film.background %}{{ film.background.url }}{% endif %}) no-repeat;
+        background-size: cover;
+        height: 960px;
+    }
+
+</style>
+
+<div class="page">
+    <div class="pageBg"></div>
+
+    <div class="container">
+
+        <div class="post">
+            <div class="leftPost">
+                {% thumbnail film.banner "294x458" crop="center" as im %}
+                <img src="{{ im.url }}" alt="">
+                {% endthumbnail %}
+            </div>
+            <div class="rightPost">
+                <div class="RateSaveBox">
+                    <!-- <div class="RateBox">
+                            <h3>Rate</h3>
+                                <div class="RateStars">
+                                    <input type="radio" id="star5" name="rate" value="5" required>
+                                    <label for="star5" title="5 stars">5 stars</label>
+                                    <input type="radio" id="star4" name="rate" value="4">
+                                    <label for="star4" title="4 stars">4 stars</label>
+                                    <input type="radio" id="star3" name="rate" value="3">
+                                    <label for="star3" title="3 stars">3 stars</label>
+                                    <input type="radio" id="star2" name="rate" value="2">
+                                    <label for="star2" title="2 stars">2 stars</label>
+                                    <input type="radio" id="star1" name="rate" value="1">
+                                    <label for="star1" title="1 star">1 star</label>
+                                </div>
+                        </div> -->
+                    <div class="Rate">
+                        {% for i in loop_time %}
+                        {% if i <= average_rating %} <!-- Full Star -->
+                            <label for="star{{ i }}" class="star full">&#9733;</label> <!-- Full star -->
+                            {% else %}
+                            <!-- Empty Star -->
+                            <label for="star{{ i }}" class="star empty">&#9734;</label> <!-- Empty star -->
+                            {% endif %}
+                            {% endfor %}
+                    </div>
+
+                    {% if user.is_authenticated %}
+                    <div class="saveBox">
+                        <button style="background-color: transparent; border-color: transparent; cursor: pointer">
+                            <i id="favorite" class="{% if is_favorite %}
+                                    bi-bookmark-plus-fill
+                                {% else %}
+                                    bi-bookmark-plus
+                                {% endif %} "
+                                onclick="{% if is_favorite %}remove_from_favorite('{{ film.slug }}'){% else %}add_to_favorite('{{ film.slug }}'){% endif %}"></i>
+                        </button>
+                    </div>
+                    {% endif %}
+                </div>
+
+
+
+                <div class="BoxHeader">
+                    <h2>{{ film.name }}</h2>
+                </div>
+                <div class="genre"><i class="fa fa-mask"></i>{%trans "Thể loại"%} : {% for genre in film.genre.all %}
+                    {{ genre }}
+                    {% endfor %}
+                </div>
+                <div class="IMDBrate"><i class="fa fa-imdb"></i>IMDB : {{ film.imdb }}</div>
+                <div class="year"><i class="far fa-calendar-alt"></i>{%trans "Năm phát hành"%}
+                    : {{ film.release_date.date.year }}</div>
+                <div class="Lan"><i class="fa fa-language"></i>{%trans "Ngôn ngữ"%}: {{ film.lang }}</div>
+                <div class="country"><i class="fas fa-globe"></i>{%trans "Quốc gia"%}: {{ film.country }}</div>
+                <div class="Dir"><i class="fa fa-user"></i>{%trans "Đạo diễn"%}: {{ film.director }} </div>
+                <div class="Cast"><i class="fas fa-users"></i>{%trans "Diễn viên"%} : {{ film.cast }} </div>
+
+
+            </div>
+
+        </div>
+        <div class="TrailerBox">
+            <!-- {% thumbnail film.background "1920x1080" crop="center" as im %}
+            <img src="{{ im.url }}" alt="" class="Poster">
+            {% endthumbnail %} -->
+
+
+            <video class="TrlVideo" controls poster="{{ film.background.url }}" id="mainVideo" onplay="showAdAfterDelay()">
+                {% if trailer %}
+                <source src="{{ trailer }}" type="video/mp4">
+                Your Browser doesn't support this tag
+                {% else %}
+                <p>No trailer available for this film.</p>
+                {% endif %}
+            </video>
+
+            <div id="adContainer" class="AdContainer" style="display: none;">
+                {%load static%}
+                <video id="adVideo" class="AdVideo" controls>
+                    <source src="{% static 'trailer/cinema.mp4' %}" type="video/mp4">
+                </video>
+                <button id="skipAdButton" onclick="skipAd()">Skip Ad</button>
+            </div>
+        </div>
+
+        
+        {% if user.is_authenticated %}
+        <div class="DownloadBox">
+            <div class="d-flex flex-wrap justify-content-between">
+                {% for show in film.movie_show.all %}
+                    <div class="col-lg-3 col-md-4 col-6 mb-3">
+                        <form action="{% url 'seat' show.shows %}" method="get">
+                            <button class="AdameMatlab btn btn-primary w-100 d-flex flex-column align-items-center">
+                                <div class="d-flex flex-column text-center">
+                                    <span class="show-time">{{ show.start_time|date:"h:i A" }}</span>
+                                    <span class="show-date">{{ show.date}}</span>
+                                </div>
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+                
+                <!-- <div class="DWItems">
+                        {% for quality in film_qualities %}
+                            <p><span class="blt"><a href="{{ quality.file.url }}">{{ quality }}</a></span></p>
+                        {% endfor %}
+                    </div> -->
+               
+
+            {% endif %}
+        </div>
+        <div class="SInfoBox">
+            <div class="BoxHeader">
+                <h2>{{ film.name }}</h2>
+            </div>
+            <p>
+                {{ film.description }}
+            </p>
+
+            <span class="maturity-rating">
+                <i class="fas fa-fire"></i> Maturity rating: TV-MA
+            </span>
+            <span class="EPTime">
+                <i class="far fa-clock"></i> Time : {{ film.length }} "
+            </span>
+        </div>
+    </div>
+
+    <div class="comment-section" style="padding: 20px; border-radius: 8px;">
+        <div class="card shadow p-4 bg border-0" style="background-color: black;">
+            {% if user.is_authenticated %}
+            <form method="post" id="ratingForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="Rate">
+                        {% for value, label in form.rating.field.choices %}
+                        <input type="radio" id="star{{ value }}" name="rating" value="{{ value }}"
+                         {% if form.rating.value == value %} checked {% endif %} required>
+                        <label for="star{{ value }}" title="{{ label }}" class="star">&#9733;</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{ form.content }}
+                </div>
+                <button type="submit" onclick="validateRating(event)" class="btn btn-primary submit-btn">Submit</button>
+            </form>
+
+            <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 999;"></div>
+
+            <!-- Rating Alert Modal -->
+            <div id="ratingAlert" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); width: 300px; background-color: #222; color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); z-index: 1000; text-align: center;">
+                <h3 style="color: #ff4444; font-size: 22px; margin-bottom: 10px;">Notification</h3>
+                <p style="color: #ccc; font-size: 16px; margin-bottom: 20px;">Please choose a rating and comment before submitting!</p>
+                <button onclick="closeRatingAlert()" style="padding: 10px 20px; background-color: #ff4444; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">OK</button>
+            </div>
+
+            <div id="errorMessage" class="alert alert-danger" style="display: none;margin-top: 1rem;"></div>
+            <div id="successMessage" class="alert alert-success" style="display: none;margin-top: 1rem;"></div>
+            <span id="pendingTag" style="display: none; color: gray; font-weight: bold;">Pending</span>
+
+            {% else %}
+            <div class="alert alert-danger" style="background-color: black;border: black;">
+                <h2><i class="fa fa-exclamation-triangle"></i> Please Login to Comment on This Post</h2>
+                <a href="{% url 'login-page' %}" class="btn btn-light mt-3">
+                    <i class="fa fa-sign-in"></i> Login
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="mt-4">
+            <h4 class="text-light">Reviews</h4>
+            {% for comment in comments %}
+            <div class="card mt-3 p-3" style="background-color: #222;">
+                <p class="text-light">{{ comment.user.username }}</p>
+                <div class="text-warning">
+                    {% for i in loop_times %}
+                    {% if i <= comment.rating %} <!-- Full Star -->
+                        <label for="star{{ i }}" class="star">&#9733;</label> <!-- Full star -->
+                        {% else %}
+                        <!-- Empty Star -->
+                        <label for="star{{ i }}" class="star">&#9734;</label> <!-- Empty star -->
+                        {% endif %}
+                        {% endfor %}
+
+                </div>
+
+                <p class="text-light">{{ comment.content }}</p>
+                <small class="text-muted">{{ comment.created_at }}</small>
+
+
+
+                {% if user == comment.user %}
+                <div class="crud_button">
+                    <button type="button" class="btn btn-warning btn-sm mt-2" data-toggle="modal"
+                        data-target="#editCommentModal" data-comment-id="{{ comment.id }}"
+                        data-comment-content="{{ comment.content|escapejs }}">
+                        <i class="fa fa-edit"></i>{%trans "Sửa" %}
+                    </button>
+
+                    <button type="button" style="width: fit-content;" class="btn btn-danger btn-sm mt-2"
+                        data-toggle="modal" data-target="#deleteCommentModal" data-comment-id="{{ comment.id }}">
+                        <i class="fa fa-trash"></i> {%trans "Xóa"%}
+                    </button>
+                </div>
+                {% endif %}
+
+            </div>
+            {% empty %}
+            <p class="text-light">No comments yet. Be the first to comment!</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Edit Comment Modal -->
+    <div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #222; color: #fff;">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCommentModalLabel">{%trans "Sửa bình luận"%}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'film-page' slug=film.slug %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="edit_comment_id" id="edit_comment_id">
+
+                        <div class="form-group">
+                            <label for="content" class="text-light">{%trans "Nội dung"%}:</label>
+                            <textarea id="content" name="content" class="form-control" rows="2"
+                                placeholder="Update your comment..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success">{%trans "Lưu"%}</button>
+                        <button type="button" class="btn btn-secondary ml-2" data-dismiss="modal">{%trans "Hủy"%}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Comment Modal -->
+    <div class="modal fade" id="deleteCommentModal" tabindex="-1" role="dialog"
+        aria-labelledby="deleteCommentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCommentModalLabel">{%trans "Xóa bình luận"%}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this comment?</p>
+                    <form method="POST" action="{% url 'film-page' slug=film.slug %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete_comment_id" id="delete_comment_id">
+                        <button type="submit" class="btn btn-danger">{%trans "Xóa"%}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{%trans "Hủy"%}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="MovieSlider ">
+        <div class="SliderTitle">{%trans "Phim cùng thể loại"%}</div>
+        <main class="regular slider">
+            {% for related_film in related_films %}
+            <li class="item">
+                <div class="itemImage">
+                    {% thumbnail related_film.banner "450x555" crop="center" as im %}
+                    <img src="{{ im.url }}" alt="">
+                    {% endthumbnail %}
+                    <div class="hover">
+                        <a href="{{ related_film.get_absolute_url }}"><i class="fas fa-play" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="MovieName">
+                    <h4>{{ related_film.name }}</h4>
+                </div>
+            </li>
+            {% endfor %}
+
+        </main>
+    </div>
+
+</div>
+
+
+<div class="nav-mask">
+</div>
+
+<script type="text/javascript">
+
+    $(".DWTitle").each((index, item) => {
+        $(item).on("click", () => {
+            $($(".DWItems")[index]).slideToggle(200);
+        })
+    })
+
+</script>
+
+
+<script>
+   let adPlayed = false;
+   function showAdAfterDelay() {
+    
+     // Wait for 2-3 seconds before showing the ad
+    var mainVideo = document.getElementById('mainVideo');
+    var adContainer = document.getElementById('adContainer');
+    var adVideo = document.getElementById('adVideo');
+    var skipAdButton = document.getElementById('skipAdButton');
+    
+    if(!adPlayed){
+    setTimeout(function() {
+        // Pause the main video to show the ad
+        mainVideo.pause();
+        
+        // Show the ad container and play the ad video
+        adContainer.style.display = 'block';
+        adVideo.play();
+        skipAdButton.style.display = 'block';
+        
+        // When the ad finishes, hide the ad and resume the main video
+        adVideo.onended = function() {
+            adContainer.style.display = 'none';  // Hide the ad container
+            mainVideo.play();  // Resume the main video
+            skipAdButton.style.display = 'none';
+        };
+        adPlayed = true;
+    }, 5000);
+    } 
+}
+
+function skipAd() {
+    var mainVideo = document.getElementById('mainVideo');
+    var adContainer = document.getElementById('adContainer');
+    var adVideo = document.getElementById('adVideo');
+    var skipAdButton = document.getElementById('skipAdButton');
+
+    // Stop the ad immediately
+    adVideo.pause();
+
+    // Hide the ad container
+    adContainer.style.display = 'none';
+
+    // Resume the main video
+    mainVideo.play();
+
+    // Hide the Skip Ad button
+    skipAdButton.style.display = 'none';
+}
+    
+    
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // JavaScript to populate the modal with comment details
+    $('#editCommentModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var commentId = button.data('comment-id'); // Extract info from data-* attributes
+        var commentContent = button.data('comment-content'); // Get the existing comment content
+
+        // Update the modal's content
+        var modal = $(this);
+        modal.find('#edit_comment_id').val(commentId); // Set the comment ID
+        modal.find('#content').val(commentContent); // Set the textarea value to existing comment content
+    });
+
+
+    $('#deleteCommentModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var commentId = button.data('comment-id'); // Extract comment ID from data-* attributes
+
+        // Update the modal's content
+        var modal = $(this);
+        modal.find('#delete_comment_id').val(commentId); // Set the comment ID for deletion
+    });
+
+
+// Function to show the rating alert modal if no rating is selected
+function validateRating(event) {
+    // Prevent form submission if validation fails
+    event.preventDefault();
+
+    const rating = document.querySelector('input[name="rating"]:checked');
+    const comment = document.querySelector('textarea[name="content"]').value.trim();
+    const ratingAlert = document.getElementById('ratingAlert');
+    const overlay = document.getElementById('overlay');
+
+    const errorMessage = document.getElementById('errorMessage');  // Assuming this element shows errors
+    const successMessage = document.getElementById('successMessage'); // Assuming this shows success
+
+    // If no rating is selected, show the alert
+    errorMessage.style.display = 'none';
+
+    if (!rating || !comment) {
+        ratingAlert.style.display = 'block';
+        overlay.style.display = 'block';
+    } else {
+        // If a rating is selected, submit the form
+        // document.getElementById('ratingForm').submit();
+        const formData = new FormData(document.getElementById('ratingForm'));
+        
+        fetch(document.getElementById('ratingForm').action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value  // CSRF token
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                // If the comment is rejected, show an error notification
+                errorMessage.textContent = data.error;  // Set the error message text
+                errorMessage.style.display = 'block';   // Show the error message
+        
+                document.querySelector('textarea[name="content"]').value = '';
+            } else {
+                // If the comment is successfully posted, show a success notification
+                successMessage.textContent = 'Your comment has been posted successfully!';
+                successMessage.style.display = 'block'
+                window.location.reload();
+            }
+            if (data.status === 'pending') {
+                pendingTag.style.display = 'inline';  // Show the "Pending" tag
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error submitting your comment.');
+        });
+    
+    }
+}
+
+// Function to close the rating alert modal
+function closeRatingAlert() {
+    document.getElementById('ratingAlert').style.display = 'none';
+    document.getElementById('overlay').style.display = 'none';
+
+}
+
+    // Elements
+    
+
+// Add event listener for the submit button
+// document.querySelector('.submit-btn').addEventListener('click', validateRating);
+
+
+</script>
+
+
+{% endblock %}

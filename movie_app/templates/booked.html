@@ -1,0 +1,17 @@
+{% extends '_shared/base.html' %}
+{% load thumbnail %}
+{% block title %}
+         {{show.film.name}}
+{% endblock %}
+
+
+
+{% block body %}
+
+<script>
+    window.onload = function() {
+      window.location.href = "./bookings";
+  }
+</script>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% load render_partial %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/svg" href="../../assets/img/WebLogo/Untitled-1.svg">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://kit.fontawesome.com/7dd9aac670.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    {% block css %}{% endblock %}
+    {% include '_shared/header_ref.html' %}
+</head>
+<body>
+{% render_partial 'home_app.views.header' %}
+
+{% block body %}
+
+{% endblock %}
+{% render_partial 'home_app.views.footer' %}
+{% include '_shared/footer_ref.html' %}
+{% block js %}{% endblock %}
+</body>
+</html>

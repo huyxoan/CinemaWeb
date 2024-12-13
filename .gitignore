@@ -1,0 +1,6 @@
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+__pycache__/
