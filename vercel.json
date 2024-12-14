@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "cinema/wsgi.py",
+        "use": "@vercel/python",
+        "config": { "maxLambdaSize": "15mb", "runtime": "python3.10.7" }
+      }
+    
+    ],
+    "routes": [     
+      {
+        "src": "/(.*)",
+        "dest": "gallery_project/wsgi.py"
+      }
+    ]
+  }
