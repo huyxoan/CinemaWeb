@@ -1,0 +1,31 @@
+
+  .title {
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+  }
+
+  .card {
+    margin: 100px auto;
+    border-radius: 10px;
+    border: none;
+  }
+
+  .pass-h {
+    border-radius: 10px 10px 0px 0px;
+    background: linear-gradient(45deg, red, #ff4343);
+}
+
+  .info {
+    line-height: 40px;
+    background: #000;
+    color: white;
+    font-size: 20px;
+    border: solid 1px;
+    border-right: 0px;
+    border-radius: 50px 0px 0px 50px;
+  }
+
+  h3 span {
+    font-weight: 400;
+  }

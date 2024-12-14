@@ -1,0 +1,69 @@
+.Rate {
+    display: inline-block;
+    direction: rtl;
+}
+
+.Rate input[type="radio"] {
+    display: none;
+}
+
+.Rate label {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.Rate input[type="radio"]:checked~label {
+    color: gold;
+}
+
+.Rate label:hover,
+.Rate label:hover~label {
+    color: gold;
+}
+
+.star.full {
+    color: gold;
+    /* Full star color (gold) */
+}
+
+.star.empty {
+    color: #ccc;
+    /* Empty star color (gray) */
+}
+
+
+.AdContainer {
+    display: none; /* Initially hidden */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2; /* Makes the ad video appear above the poster */
+    background: rgba(0, 0, 0, 0.5); /* Optional: Add a transparent background to highlight the ad */
+}
+
+.AdVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#skipAdButton {
+    position: absolute;
+    bottom: 4em;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: none; /* Initially hidden */
+}
+
+#skipAdButton:hover {
+    background-color: rgba(0, 0, 0, 0.9);
+}

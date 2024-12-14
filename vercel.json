@@ -11,7 +11,7 @@
     "routes": [     
       {
         "src": "/(.*)",
-        "dest": "gallery_project/wsgi.py"
+        "dest": "cinema/wsgi.py"
       }
     ]
   }
