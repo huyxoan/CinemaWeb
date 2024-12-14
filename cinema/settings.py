@@ -87,9 +87,19 @@ DATABASES = {
     }
 }
 
+
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgresql://postgres:rfKHjoxxjqfPXpufkoBxBXkeZxRoJXQd@junction.proxy.rlwy.net:56333/railway'
+    )
+}
+
+
 # DATABASES = {
 #         'default': {
-#             'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#             'ENGINE': 'django.db.backends.postgresql',
 #             'NAME' : 'railway',
 #             'USER' : 'postgres',
 #             'PASSWORD': 'rfKHjoxxjqfPXpufkoBxBXkeZxRoJXQd',
