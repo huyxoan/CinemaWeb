@@ -10,25 +10,7 @@ from django.http import HttpResponse
 
 from django.utils.translation import activate
 
-from nltk.stem import WordNetLemmatizer 
-from nltk.tokenize import word_tokenize
-import random,json
-import numpy as np
 
-from tensorflow import keras
-import tensorflow
-from tensorflow.keras import Sequential
-from tensorflow.keras.layers import Dense, Dropout  
-
-import nltk
-import pickle
-
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-# nltk.download('punkt')
-# nltk.download('wordnet')
-
-from keras.models import load_model
 
 
 
