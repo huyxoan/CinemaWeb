@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-40dnw=mr=s6sn1@45hrcy-@h+d12)5o4au!5xzmvjz3h&h#qk*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
-
-ALLOWED_HOSTS = ['localhost','127.0.0.1','cinemaweb-production.up.railway.app/']
-# ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://cinemaweb-production.up.railway.app/']
+# ALLOWED_HOSTS = ['localhost','127.0.0.1','cinemaweb-production.up.railway.app/']
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+# CSRF_TRUSTED_ORIGINS = ['https://cinemaweb-production.up.railway.app/']
 
 
 
@@ -93,6 +93,13 @@ DATABASES = {
 
 
 import dj_database_url
+
+
+import dj_database_url
+DATABASES = {
+    'default' : dj_database_url.parse('postgresql://cinema_postgres_render_user:LRVy2HPM0SQat1iS9D0w9eAGTSkHAu5V@dpg-ctfa02ogph6c73fkvr40-a.oregon-postgres.render.com/cinema_postgres_render')  
+}
+
 
 # DATABASES = {
 #     'default': dj_database_url.config(
