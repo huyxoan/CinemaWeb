@@ -34,11 +34,7 @@ class SerieComponent(DetailView):
 
         return context
 
-from django.utils import timezone
-from transformers import pipeline
 
-
-sentiment_analyzer = pipeline("sentiment-analysis")
 class FilmComponent(DetailView):
     template_name = 'film_download_page.html'
     model = Film
