@@ -1,0 +1,8 @@
+numpy
+h5py
+jax
+jaxlib
+keras
+matplotlib
+scikit-learn
+scipy
