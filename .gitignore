@@ -4,3 +4,13 @@
 *.pyc
 *.pyo
 __pycache__/
+
+
+# Django-specific files
+db.sqlite3
+*.mo
+*.pot
+
+# Ignore migrations (optional, keep them if sharing with others)
+**/migrations/*
+!**/migrations/__init__.py

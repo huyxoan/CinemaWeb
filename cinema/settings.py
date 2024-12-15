@@ -23,10 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-40dnw=mr=s6sn1@45hrcy-@h+d12)5o4au!5xzmvjz3h&h#qk*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','cinemaweb-production.up.railway.app/']
+# ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://cinemaweb-production.up.railway.app/']
 
 
@@ -83,21 +84,21 @@ WSGI_APPLICATION = 'cinema.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 import dj_database_url
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://postgres:rfKHjoxxjqfPXpufkoBxBXkeZxRoJXQd@junction.proxy.rlwy.net:56333/railway'
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgresql://postgres:rfKHjoxxjqfPXpufkoBxBXkeZxRoJXQd@junction.proxy.rlwy.net:56333/railway'
+#     )
+# }
 
 
 # DATABASES = {
