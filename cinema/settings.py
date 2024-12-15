@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-40dnw=mr=s6sn1@45hrcy-@h+d12)5o4au!5xzmvjz3h&h#qk*
 DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
 # ALLOWED_HOSTS = ['localhost','127.0.0.1','cinemaweb-production.up.railway.app/']
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = ['*']
 # CSRF_TRUSTED_ORIGINS = ['https://cinemaweb-production.up.railway.app/']
 
 
