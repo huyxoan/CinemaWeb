@@ -1,168 +1,193 @@
 {% load i18n %}
 <style>
-    /* Overall container */
-    .userDashboard {
-        position: relative;
-        display: inline-block;
-    }
-    
-    /* User Icon */
-    .dashboard-toggle {
-        text-decoration: none;
-        font-size: 2rem;
-        color: #ff5722; /* Vibrant cinema theme color */
-        cursor: pointer;
-        transition: color 0.3s ease;
-    }
-    
-    .dashboard-toggle:hover {
-        color: #f9a825;
-    }
-    
-    /* Dropdown Menu */
-    .dashboard-menu {
-        position: absolute;
-        top: 120%;
-        right: 0;
-        background: #2c2c2c; /* Dark cinema-themed background */
-        border-radius: 8px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-        width: 220px;
-        display: none; /* Hidden by default */
-        z-index: 10;
-        padding: 10px;
-    }
-    
-    /* Show menu on hover */
-    /* .userDashboard:hover .dashboard-menu {
+  /* Overall container */
+  .userDashboard {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* User Icon */
+  .dashboard-toggle {
+    text-decoration: none;
+    font-size: 2rem;
+    color: #ff5722; /* Vibrant cinema theme color */
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .dashboard-toggle:hover {
+    color: #f9a825;
+  }
+
+  /* Dropdown Menu */
+  .dashboard-menu {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: #2c2c2c; /* Dark cinema-themed background */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 220px;
+    display: none; /* Hidden by default */
+    z-index: 10;
+    padding: 10px;
+  }
+
+  /* Show menu on hover */
+  /* .userDashboard:hover .dashboard-menu {
         display: block;
     } */
 
-    .dashboard-menu {
-        display: block;
-    }
-    /* .dashboard-menu:hover {
+  .dashboard-menu {
+    display: block;
+  }
+  /* .dashboard-menu:hover {
         display: block;
     }
      */
-    /* Language Toggle */
-    
-    /* Menu Items */
-    .dashboard-menu ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    
-    .dashboard-menu ul li {
-        margin: 10px 0;
-    }
-    
-    .dashboard-menu ul li a {
-        text-decoration: none;
-        font-size: 0.9rem;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        transition: color 0.3s ease;
-    }
-    
-    .dashboard-menu ul li a:hover {
-        color: #ff5722;
-    }
-    
-    .dashboard-menu ul li a i {
-        margin-right: 10px;
-        font-size: 1.2rem;
-    }
-    
-    /* Divider */
-    .dashboard-menu hr {
-        border: 0;
-        border-top: 1px solid #555;
-        margin: 10px 0;
-    }
-    </style>
+  /* Language Toggle */
+
+  /* Menu Items */
+  .dashboard-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .dashboard-menu ul li {
+    margin: 10px 0;
+  }
+
+  .dashboard-menu ul li a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+  }
+
+  .dashboard-menu ul li a:hover {
+    color: #ff5722;
+  }
+
+  .dashboard-menu ul li a i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+
+  /* Divider */
+  .dashboard-menu hr {
+    border: 0;
+    border-top: 1px solid #555;
+    margin: 10px 0;
+  }
+</style>
 
 <header>
-    <nav>
-        <div class="ToggleButton">
-            <button type="button" class="hamburger">
-                <span class="line"></span>
-                <span class="line"></span>
-                <span class="line"></span>
-            </button>
-        </div>
-        <ul class="navbarList">
-            <li class="navbarItem {% if request.resolver_match.url_name == 'home-page' %}activeItem{% endif %}"><a
-                    href="{% url 'home-page' %}"
-                    style="text-decoration: none; color: inherit">{% trans "Trang chủ" %}</a></li>
-            <li class="navbarItem {% if request.resolver_match.url_name == 'serie-list-page' %}activeItem{% endif %}">
-                <a
-                        href="{% url 'serie-list-page' %}"
-                        style="text-decoration: none; color: inherit">{% trans "Loạt phim" %}</a>
-            </li>
-            <li class="navbarItem {% if request.resolver_match.url_name == 'film-list-page' %}activeItem{% endif %}">
-                <a
-                        href="{% url 'film-list-page' %}"
-                        style="text-decoration: none; color: inherit">{% trans "Phim chiếu rạp" %}</a>
-            </li>
-            <li class="navbarItem">{% trans "Liên hệ" %}</li>
-            {% if user.is_superuser and user.is_authenticated %}
-                <li class="navbarItem"><a href="/admin" target="_blank" style="text-decoration: none; color: inherit">{%trans "Quản trị viên"%}</a>
-                </li>
+  <nav>
+    <div class="ToggleButton">
+      <button type="button" class="hamburger">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </button>
+    </div>
+    <ul class="navbarList">
+      <li
+        class="navbarItem {% if request.resolver_match.url_name == 'home-page' %}activeItem{% endif %}"
+      >
+        <a
+          href="{% url 'home-page' %}"
+          style="text-decoration: none; color: inherit"
+          >{% trans "Trang chủ" %}</a
+        >
+      </li>
+      <!-- <li
+        class="navbarItem {% if request.resolver_match.url_name == 'serie-list-page' %}activeItem{% endif %}"
+      >
+        <a
+          href="{% url 'serie-list-page' %}"
+          style="text-decoration: none; color: inherit"
+          >{% trans "Loạt phim" %}</a
+        >
+      </li> -->
+      <li
+        class="navbarItem {% if request.resolver_match.url_name == 'film-list-page' %}activeItem{% endif %}"
+      >
+        <a
+          href="{% url 'film-list-page' %}"
+          style="text-decoration: none; color: inherit"
+          >{% trans "Phim chiếu rạp" %}</a
+        >
+      </li>
+      <li class="navbarItem">{% trans "Liên hệ" %}</li>
+      {% if user.is_superuser and user.is_authenticated %}
+      <li class="navbarItem">
+        <a
+          href="/admin"
+          target="_blank"
+          style="text-decoration: none; color: inherit"
+          >{%trans "Quản trị viên"%}</a
+        >
+      </li>
 
-            {% endif %}
-        </ul>
-        <div class="navRightPart">
-            <div class="searchBox">
-                <input type="text" id="searchinput" placeholder="Search"/>
-            </div>
-            <div>
-                {% if user.is_authenticated %}
-                    <!-- <div class="userDashboard">
+      {% endif %}
+    </ul>
+    <div class="navRightPart">
+      <div class="searchBox">
+        <input type="text" id="searchinput" placeholder="Search" />
+      </div>
+      <div>
+        {% if user.is_authenticated %}
+        <!-- <div class="userDashboard">
                         <a href="{% url 'dashboard-page' %}">
                             <i class="fas fa-user"></i>
                         </a>
                     </div> -->
-                    <div class="userDashboard">
-                        <!-- User Icon -->
-                        <a href="{% url 'dashboard-page' %}" class="dashboard-toggle">
-                            <i class="fas fa-user"></i>
-                        </a>
-                    
-                        <!-- Dropdown Menu -->
-                        <div class="dashboard-menu">
-                            <!-- Language Toggle -->
-                            <div class="language-toggle">
-                                 {%include 'translate/translate.html'%}
-                            </div>
-                        
-                            <!-- Menu Items -->
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        <i class="fas fa-film"></i> {% trans "Vé của tôi" %}
-                                    </a>
-                                </li>
-                                <!-- <li>
+        <div class="userDashboard">
+          <!-- User Icon -->
+          <a href="{% url 'dashboard-page' %}" class="dashboard-toggle">
+            <i class="fas fa-user"></i>
+          </a>
+
+          <!-- Dropdown Menu -->
+          <div class="dashboard-menu">
+            <!-- Language Toggle -->
+            <div class="language-toggle">
+              {%include 'translate/translate.html'%}
+            </div>
+
+            <!-- Menu Items -->
+            <ul>
+              <li>
+                <a href="#">
+                  <i class="fas fa-film"></i> {% trans "Vé của tôi" %}
+                </a>
+              </li>
+              <!-- <li>
                                     <a href="{% url 'dashboard-page' %}">
                                         <i class="fas fa-user-circle"></i> Profile
                                     </a>
                                 </li> -->
-                                <li>
-                                    <a href="{% url 'logout' %}">
-                                        <i class="fas fa-sign-out-alt"></i> {% trans "Đăng xuất" %}
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                {% else %}
-                    <button class="LoginButt"><a href="{% url 'login-page' %}"
-                                                 style="text-decoration: none; color: inherit">Login</a></button>
-                {% endif %}
-            </div>
+              <li>
+                <a href="{% url 'logout' %}">
+                  <i class="fas fa-sign-out-alt"></i> {% trans "Đăng xuất" %}
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-    </nav>
+        {% else %}
+        <button class="LoginButt">
+          <a
+            href="{% url 'login-page' %}"
+            style="text-decoration: none; color: inherit"
+            >Login</a
+          >
+        </button>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
 </header>
