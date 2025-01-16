@@ -85,21 +85,24 @@ WSGI_APPLICATION = 'cinema.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 
 import dj_database_url
 DATABASES = {
-    'default' : dj_database_url.parse('postgresql://cinema_postgres_render_user:LRVy2HPM0SQat1iS9D0w9eAGTSkHAu5V@dpg-ctfa02ogph6c73fkvr40-a.oregon-postgres.render.com/cinema_postgres_render')  
+    'default' : dj_database_url.parse('postgresql://cinemawebsite_official_user:xuHGKLmWPOcxUPqUqTv2sJNcfiz8AYAi@dpg-cu4epm0gph6c739o1jsg-a.oregon-postgres.render.com/cinemawebsite_official')  
 }
+
+
+# import dj_database_url
+# DATABASES = {
+#     'default' : dj_database_url.parse('postgresql://cinema_postgres_render_user:LRVy2HPM0SQat1iS9D0w9eAGTSkHAu5V@dpg-ctfa02ogph6c73fkvr40-a.oregon-postgres.render.com/cinema_postgres_render')  
+# }
 
 # import dj_database_url
 # DATABASES = {
